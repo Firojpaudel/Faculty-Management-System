@@ -62,3 +62,6 @@ local.properties
 # OS specific #
 .DS_Store
 Thumbs.db
+
+*.md
+tomcat.8080/
