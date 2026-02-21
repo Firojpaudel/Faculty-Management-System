@@ -63,5 +63,5 @@ local.properties
 .DS_Store
 Thumbs.db
 
-*.md
+
 tomcat.8080/
