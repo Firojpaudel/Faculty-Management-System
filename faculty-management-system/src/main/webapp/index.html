@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBMC Faculty Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="login-container" class="glass-panel">
+        <div class="logo-area">
+            <h1>MBMC</h1>
+            <p>Faculty Management System</p>
+        </div>
+        <form id="login-form">
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required placeholder="admin@mbmc.edu.np">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="primary-btn">Sign In</button>
+            <div id="login-error" class="error-msg"></div>
+        </form>
+    </div>
+
+    <div id="dashboard-container" class="dashboard-layout hidden">
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-header">
+                <h2>MBMC FMS</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">Dashboard</a>
+                <a href="#" class="nav-item">Users</a>
+                <a href="#" class="nav-item">Students</a>
+                <a href="#" class="nav-item">Staff</a>
+                <a href="#" class="nav-item" id="logout-btn">Logout</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="top-bar glass-panel">
+                <h2 id="page-title">Dashboard Overview</h2>
+                <div class="user-profile">
+                    <span id="user-role-badge" class="badge">Role</span>
+                </div>
+            </header>
+            
+            <div class="content-area">
+                <div class="stats-grid">
+                    <div class="stat-card glass-panel">
+                        <h3>Total Students</h3>
+                        <p class="stat-number">0</p>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <h3>Active Staff</h3>
+                        <p class="stat-number">0</p>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <h3>System Status</h3>
+                        <p class="stat-number text-success">Online</p>
+                    </div>
+                </div>
+
+                <div class="action-panel glass-panel mt-2">
+                    <h3>Quick Actions</h3>
+                    <p>Welcome to the Phase 1 Foundation of the MBMC Faculty Management System. 
+                    The backend APIs for standard authentication and secure profile enrollment are now active.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
