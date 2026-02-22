@@ -19,13 +19,31 @@ import java.util.UUID;
 public class FmsApplication {
 
     public static void main(String[] args) throws Exception {
-        // 1. Initialize Database with Massive Data & Cleanup
-        org.example.fms.core.database.DatabaseSeeder.seedDummyData();
+        // 1. Initialize Database with Massive Data (Only if empty)
+        try (Connection conn = DatabaseConnectionManager.getConnection()) {
+            // First, always make sure the schema (including the holidays table) is
+            // up-to-date
+            org.example.fms.core.database.DatabaseSeeder.initSchema(conn);
 
-        // 2. Ensure the Super Admin account exists (must come AFTER cleanup)
+            String checkSql = "SELECT COUNT(*) FROM subjects";
+            try (PreparedStatement stmt = conn.prepareStatement(checkSql)) {
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next() && rs.getInt(1) == 0) {
+                        System.out.println("Initializing database with dummy data...");
+                        org.example.fms.core.database.DatabaseSeeder.seedDummyData();
+                    } else {
+                        System.out.println("Database already seeded. Skipping main data injection.");
+                        // But always re-seed holidays if they are missing (separate table)
+                        org.example.fms.core.database.DatabaseSeeder.seedHolidaysPublic(conn);
+                    }
+                }
+            }
+        }
+
+        // 2. Ensure the Super Admin account exists
         seedInitialSuperAdmin();
 
-        // 2. Start Embedded Tomcat Server
+        // 3. Start Embedded Tomcat Server
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8080);
         tomcat.getConnector(); // Force initialization of the default connector
@@ -95,7 +113,7 @@ public class FmsApplication {
                         String userId = "admin-uuid-001";
                         String roleId = UUID.randomUUID().toString();
 
-                        String insertUser = "INSERT INTO users (id, email, password_hash) VALUES (?, ?, ?)";
+                        String insertUser = "INSERT INTO users (id, email, password_hash) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE email = VALUES(email)";
                         try (PreparedStatement userStmt = conn.prepareStatement(insertUser)) {
                             userStmt.setString(1, userId);
                             userStmt.setString(2, "admin@faculty.edu");
@@ -103,7 +121,7 @@ public class FmsApplication {
                             userStmt.executeUpdate();
                         }
 
-                        String insertRole = "INSERT INTO user_roles (id, user_id, role) VALUES (?, ?, ?)";
+                        String insertRole = "INSERT INTO user_roles (id, user_id, role) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE role = VALUES(role)";
                         try (PreparedStatement roleStmt = conn.prepareStatement(insertRole)) {
                             roleStmt.setString(1, roleId);
                             roleStmt.setString(2, userId);
