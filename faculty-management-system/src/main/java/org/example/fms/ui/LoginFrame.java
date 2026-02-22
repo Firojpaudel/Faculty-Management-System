@@ -21,7 +21,7 @@ public class LoginFrame extends JFrame {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public LoginFrame() {
-        setTitle("Faculty Management System");
+        setTitle("Campus Nexus");
         setSize(450, 420);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -42,7 +42,7 @@ public class LoginFrame extends JFrame {
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titleLabel.setForeground(primaryBlue);
 
-        JLabel subtitleLabel = new JLabel("Faculty Management System");
+        JLabel subtitleLabel = new JLabel("Campus Nexus");
         subtitleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         subtitleLabel.setForeground(Color.GRAY);

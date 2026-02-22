@@ -24,4 +24,8 @@ public class SessionManager {
         token = null;
         role = null;
     }
+
+    public static String getBaseUrl() {
+        return "http://localhost:8080"; // Tomcat context is mounted at root, no sub-path
+    }
 }
