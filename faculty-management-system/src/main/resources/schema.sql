@@ -288,3 +288,45 @@ CREATE TABLE IF NOT EXISTS exam_results (
     FOREIGN KEY (subject_id) REFERENCES subjects(id),
     FOREIGN KEY (semester_id) REFERENCES semesters(id)
 );
+
+-- Assignments Table
+CREATE TABLE IF NOT EXISTS assignments (
+    id VARCHAR(36) PRIMARY KEY,
+    subject_id VARCHAR(36) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    deadline TIMESTAMP NOT NULL,
+    created_by VARCHAR(36) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id),
+    FOREIGN KEY (created_by) REFERENCES users(id)
+);
+
+-- Student Submissions Table
+CREATE TABLE IF NOT EXISTS submissions (
+    id VARCHAR(36) PRIMARY KEY,
+    assignment_id VARCHAR(36) NOT NULL,
+    student_id VARCHAR(36) NOT NULL,
+    content_body TEXT NULL,
+    file_url VARCHAR(500) NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('submitted', 'late', 'graded', 'returned') DEFAULT 'submitted',
+    marks DECIMAL(5,2) NULL,
+    feedback TEXT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (assignment_id) REFERENCES assignments(id),
+    FOREIGN KEY (student_id) REFERENCES students(id)
+);
+
+-- Holidays Table
+CREATE TABLE IF NOT EXISTS holidays (
+    id VARCHAR(36) PRIMARY KEY,
+    bs_year INT NOT NULL,
+    bs_month INT NOT NULL,
+    bs_day INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    is_public_holiday BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
