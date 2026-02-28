@@ -27,7 +27,7 @@ public class DatabaseSeeder {
             }
 
             // Optional: Uncomment the line below to wipe existing data for a fresh start
-            clearDatabase(conn);
+            // clearDatabase(conn);
 
             // Seed holidays for the 10-year calendar range
             seedHolidays(conn);
@@ -107,11 +107,22 @@ public class DatabaseSeeder {
             // 4. Seed Staff
             if (isTableEmpty(conn, "staff")) {
                 System.out.println("Seeding multiple faculty staff...");
-                String[] teacherNames = { "Dr. Shyam Nepal", "Prof. Krishna Thapa", "Ms. Sarita Rai", "Dr. Binod Mahat",
-                        "Er. Pradip Gurung" };
-                String[] teacherEmails = { "teacher@faculty.edu", "krishna@faculty.edu", "sarita@faculty.edu",
-                        "binod@faculty.edu", "pradip@faculty.edu" };
-                String[] designs = { "Professor", "Associate Professor", "Lecturer", "Professor", "Lecturer" };
+                String[] teacherNames = {
+                        "Dr. Shyam Nepal", "Prof. Krishna Thapa", "Ms. Sarita Rai", "Dr. Binod Mahat",
+                        "Er. Pradip Gurung", "Dr. Anjali Sharma", "Mr. Ramesh Poudel", "Ms. Deepa Karki",
+                        "Prof. Sanjay Gupta", "Dr. Meena Basnet"
+                };
+                String[] teacherEmails = {
+                        "teacher@faculty.edu", "krishna@faculty.edu", "sarita@faculty.edu",
+                        "binod@faculty.edu", "pradip@faculty.edu", "anjali@faculty.edu",
+                        "ramesh@faculty.edu", "deepa@faculty.edu", "sanjay@faculty.edu",
+                        "meena@faculty.edu"
+                };
+                String[] designs = {
+                        "Professor", "Associate Professor", "Lecturer", "Professor",
+                        "Lecturer", "Associate Professor", "Lecturer", "Lecturer",
+                        "Professor", "Assistant Professor"
+                };
 
                 for (int i = 0; i < teacherNames.length; i++) {
                     String userId = UUID.randomUUID().toString();
@@ -141,7 +152,8 @@ public class DatabaseSeeder {
                         stmt.setString(4, teacherNames[i]);
                         stmt.setString(5, designs[i]);
                         stmt.setString(6, "teaching");
-                        stmt.setString(7, DEPT_CS);
+                        // Distribute between CS and BA
+                        stmt.setString(7, (i % 2 == 0) ? DEPT_CS : DEPT_BA);
                         stmt.setString(8, "permanent");
                         stmt.setString(9, "2020-01-01");
                         stmt.executeUpdate();
@@ -440,6 +452,7 @@ public class DatabaseSeeder {
         stmt.addBatch();
     }
 
+    @SuppressWarnings("unused")
     private static void clearDatabase(Connection conn) throws java.sql.SQLException {
         System.out.println("CAUTION: Clearing database for fresh seed...");
         String[] tables = { "holidays", "submissions", "assignments", "exam_results", "learning_materials",

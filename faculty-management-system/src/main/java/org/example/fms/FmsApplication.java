@@ -29,10 +29,10 @@ public class FmsApplication {
             try (PreparedStatement stmt = conn.prepareStatement(checkSql)) {
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next() && rs.getInt(1) == 0) {
-                        System.out.println("Initializing database with dummy data...");
+                        System.out.println("No subject data found. Initializing database with dummy data...");
                         org.example.fms.core.database.DatabaseSeeder.seedDummyData();
                     } else {
-                        System.out.println("Database already seeded. Skipping main data injection.");
+                        System.out.println("Database already contains data. Skipping default seeding.");
                         // But always re-seed holidays if they are missing (separate table)
                         org.example.fms.core.database.DatabaseSeeder.seedHolidaysPublic(conn);
                     }
